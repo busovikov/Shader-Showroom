@@ -1,0 +1,12 @@
+function init(self)
+	local pixels_per_unit = 300;
+	local resolution =  vmath.vector4(960,640, pixels_per_unit, 0);
+
+	go.set("#model", "resolution", resolution)
+
+	local bg= vmath.vector4(0.21, 0.09, 0.41, 1);
+	local mc = vmath.vector4(0.33, 0.08, 0.54, 1);
+
+	go.set("#model", "bg", bg)
+	go.set("#model", "mc", mc)
+end
