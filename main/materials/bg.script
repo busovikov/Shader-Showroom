@@ -1,26 +1,24 @@
+go.property("main_color", vmath.vector4(0.33, 0.08, 0.54, 1))
+go.property("background_color", vmath.vector4(0.21, 0.09, 0.41, 1))
 go.property("rotation_speed", 0.1)
 go.property("field_speed", 0.1)
 go.property("separate_rotation", true)
 go.property("move_field_direction", vmath.vector4(-0.1, 0.1, 0, 0))
 
-local function update_gb(dt, rotation_speed)
+local function update_gb(self)
 	w, h = window.get_size()
 	local pixels_per_unit = 300;
 	local resolution =  vmath.vector4(w,h, pixels_per_unit, 0);
 
 	go.set("#model", "resolution", resolution)
-
-	local bg= vmath.vector4(0.21, 0.09, 0.41, 1);
-	local mc = vmath.vector4(0.33, 0.08, 0.54, 1);
-
-	go.set("#model", "bg", bg)
-	go.set("#model", "mc", mc)
+	go.set("#model", "bg", self.background_color)
+	go.set("#model", "mc", self.main_color)
 end
 
 function init(self)
 	self.time = 0
 	window.set_listener(window_callback)
-	update_gb()
+	update_gb(self)
 end
 
 function update(self, dt)
@@ -32,7 +30,7 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("window_update") then
-		update_gb()
+		update_gb(self)
 	end
 end
 
