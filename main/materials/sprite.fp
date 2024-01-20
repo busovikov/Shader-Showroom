@@ -7,6 +7,8 @@ uniform lowp sampler2D tex4;
 uniform lowp sampler2D tex5;
 uniform lowp vec4 tint;
 uniform lowp vec4 resolution;
+uniform lowp vec4 time_0_rspeed_1_fspeed_2_separate_3;
+uniform lowp vec4 move_field_direction;
 uniform lowp vec4 bg;
 uniform lowp vec4 mc;
 
@@ -40,7 +42,19 @@ float box(vec2 _st, vec2 _size){
 vec4 random_texture(in vec2 uv, in vec3 resolution, in float _scale)
 {
     vec2 id = floor(uv);
-    float rot = PI*random(id);
+    float time = time_0_rspeed_1_fspeed_2_separate_3.x;
+    float speed = time_0_rspeed_1_fspeed_2_separate_3.y;
+    bool separate = time_0_rspeed_1_fspeed_2_separate_3.w == 1;
+    float factor = random(id);
+    if (separate)
+    {
+        factor*=time*speed;
+    }
+    else
+    {
+        factor+=time*speed;
+    }
+    float rot = PI*factor;
     int index = int(id.x + id.y * resolution.x / resolution.z) % 5;
 
     vec4 col = vec4(0);
@@ -74,7 +88,11 @@ vec4 random_texture(in vec2 uv, in vec3 resolution, in float _scale)
 
 void main()
 {
+    float time = time_0_rspeed_1_fspeed_2_separate_3.x;
+    float speed = time_0_rspeed_1_fspeed_2_separate_3.z;
+    vec2 field_offset = vec2(move_field_direction.x, move_field_direction.y);
     vec2 uv = vec2(var_texcoord0.x * resolution.x / resolution.z, var_texcoord0.y * resolution.y / resolution.z);
+    uv = uv+field_offset*speed*time;
     uv = rotate2D(uv,PI*0.2);
     lowp vec4 tint_pm = vec4(tint.xyz * tint.w, tint.w);
 

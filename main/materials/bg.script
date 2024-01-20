@@ -1,4 +1,9 @@
-local function update_gb()
+go.property("rotation_speed", 0.1)
+go.property("field_speed", 0.1)
+go.property("separate_rotation", true)
+go.property("move_field_direction", vmath.vector4(-0.1, 0.1, 0, 0))
+
+local function update_gb(dt, rotation_speed)
 	w, h = window.get_size()
 	local pixels_per_unit = 300;
 	local resolution =  vmath.vector4(w,h, pixels_per_unit, 0);
@@ -13,8 +18,16 @@ local function update_gb()
 end
 
 function init(self)
+	self.time = 0
 	window.set_listener(window_callback)
 	update_gb()
+end
+
+function update(self, dt)
+	self.time = self.time + dt
+	local time_0_rspeed_1_fspeed_2_separate_3 = vmath.vector4(self.time, self.rotation_speed, self.field_speed, self.separate_rotation and 1.0 or 0.0)
+	go.set("#model", "time_0_rspeed_1_fspeed_2_separate_3", time_0_rspeed_1_fspeed_2_separate_3)
+	go.set("#model", "move_field_direction", self.move_field_direction)
 end
 
 function on_message(self, message_id, message, sender)
