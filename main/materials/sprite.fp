@@ -83,5 +83,4 @@ void main()
     gl_FragColor =  col * mc * tint_pm;
     else
     gl_FragColor = bg * tint_pm; //chess(botom_color, top_color, uv);
-    
 }

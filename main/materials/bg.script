@@ -1,6 +1,7 @@
-function init(self)
+local function update_gb()
+	w, h = window.get_size()
 	local pixels_per_unit = 300;
-	local resolution =  vmath.vector4(960,640, pixels_per_unit, 0);
+	local resolution =  vmath.vector4(w,h, pixels_per_unit, 0);
 
 	go.set("#model", "resolution", resolution)
 
@@ -9,4 +10,19 @@ function init(self)
 
 	go.set("#model", "bg", bg)
 	go.set("#model", "mc", mc)
+end
+
+function init(self)
+	window.set_listener(window_callback)
+	update_gb()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("window_update") then
+		update_gb()
+	end
+end
+
+function window_callback(self, event, data)
+	update_gb()
 end
